@@ -1,22 +1,49 @@
 package com.erickmarques.prideDevBank.entity;
 
 import javax.persistence.*;
+
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 @Entity
-@Table( name = "tabela_cliente")
+@Table( name = "cliente", uniqueConstraints = @UniqueConstraint(columnNames={"cpf"}))
+@Component
 public class ClienteEntity implements Serializable{
-
-	/**
-	 * 
-	 */
+	
+	public ClienteEntity() {
+		
+	}
+	
+	public ClienteEntity(String nome, String cpf, String nomeSocial) {
+		this.nome = nome;
+		this.cpf = cpf;
+		this.nomeSocial = nomeSocial;
+	}
+	
+	
 	private static final long serialVersionUID = 1L;
 	
-	public int getId() {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@NonNull
+	@JsonProperty("nome")
+	private String nome;
+	
+	@NonNull
+	@JsonProperty("cpf")
+	private String cpf;
+	
+	@JsonProperty("nomeSocial")
+	private String nomeSocial;
+	
+	public Integer getId() {
 		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 	public String getNome() {
 		return nome;
@@ -36,12 +63,6 @@ public class ClienteEntity implements Serializable{
 	public void setNomeSocial(String nomeSocial) {
 		this.nomeSocial = nomeSocial;
 	}
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-	private String nome;
-	private String cpf;
-	private String nomeSocial;
 	
 	
 	
