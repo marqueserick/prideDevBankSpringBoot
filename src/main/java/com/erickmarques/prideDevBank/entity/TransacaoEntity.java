@@ -36,11 +36,11 @@ public class TransacaoEntity implements Serializable {
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "idContaDestino", referencedColumnName = "id")
 	private ContaEntity contaDestino;
-	
+
 	public TransacaoEntity() {
-		
+
 	}
-	
+
 	public TransacaoEntity(float valorTransacao, ContaEntity contaOrigem, ContaEntity contaDestino) {
 		this.valorTransacao = valorTransacao;
 		this.contaOrigem = contaOrigem;

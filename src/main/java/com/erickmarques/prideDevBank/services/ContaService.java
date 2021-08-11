@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.erickmarques.prideDevBank.entity.ContaEntity;
 import com.erickmarques.prideDevBank.repository.ContaRepository;
+import static com.erickmarques.prideDevBank.util.Validador.temSaldo;;
 
 @Service
 public class ContaService {
@@ -50,10 +51,18 @@ public class ContaService {
 		contaRepository.save(contaEntity);
 		return contaEntity;
 	}
-	
+
 	public ContaEntity sacar(ContaEntity contaEntity, float valorSaque) {
+		temSaldo(contaEntity.getSaldo(), valorSaque);
 		contaEntity.setSaldo(contaEntity.getSaldo() - valorSaque);
 		contaRepository.save(contaEntity);
+		return contaEntity;
+	}
+
+	public ContaEntity[] transferir(ContaEntity contaOrigem, ContaEntity contaDestino, float valorSaque) {
+		contaOrigem = this.sacar(contaOrigem, valorSaque);
+		contaDestino = this.depositar(contaDestino, valorSaque);
+		ContaEntity[] contaEntity = { contaOrigem, contaDestino };
 		return contaEntity;
 	}
 

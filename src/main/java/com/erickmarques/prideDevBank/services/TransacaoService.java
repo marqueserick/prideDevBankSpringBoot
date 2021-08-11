@@ -7,7 +7,6 @@ import com.erickmarques.prideDevBank.entity.ContaEntity;
 import com.erickmarques.prideDevBank.entity.TransacaoEntity;
 import com.erickmarques.prideDevBank.exceptions.SaldoInsuficienteException;
 import com.erickmarques.prideDevBank.repository.TransacaoRepository;
-import static com.erickmarques.prideDevBank.util.Validador.temSaldo;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,12 +32,11 @@ public class TransacaoService {
 			novaTransacao.setContaDestino(
 					contaService.pesquisarPorAgenciaEConta(novaTransacao.getContaDestino().getNumeroAgencia(),
 							novaTransacao.getContaDestino().getNumeroConta()));
-			temSaldo(novaTransacao.getContaOrigem().getSaldo(), novaTransacao.getValorTransacao());
+			ContaEntity[] contaEntity = contaService.transferir(novaTransacao.getContaOrigem(),
+					novaTransacao.getContaDestino(), novaTransacao.getValorTransacao());
+			novaTransacao.setContaOrigem(contaEntity[0]);
+			novaTransacao.setContaDestino(contaEntity[1]);
 			transacao.save(novaTransacao);
-			novaTransacao.setContaOrigem(
-					contaService.sacar(novaTransacao.getContaOrigem(), novaTransacao.getValorTransacao()));
-			novaTransacao.setContaDestino(
-					contaService.depositar(novaTransacao.getContaDestino(), novaTransacao.getValorTransacao()));
 			return novaTransacao;
 		} catch (SaldoInsuficienteException e) {
 			throw new SaldoInsuficienteException();
