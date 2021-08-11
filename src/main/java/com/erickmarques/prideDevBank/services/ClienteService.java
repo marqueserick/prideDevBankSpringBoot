@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.erickmarques.prideDevBank.entity.ClienteEntity;
 import com.erickmarques.prideDevBank.repository.ClienteRepository;
+import static com.erickmarques.prideDevBank.util.Validador.validarCPF;;
 
 @Service
 public class ClienteService {
@@ -16,15 +17,17 @@ public class ClienteService {
 	private ClienteRepository clienteRepository;
 	
 	@Autowired
-	private ClienteEntity clienteEntity;
+	ClienteEntity clienteEntity;
+
 	
-	public ClienteEntity criarNovoCliente(ClienteEntity clienteEntity) {
+	public ClienteEntity novoCliente(ClienteEntity clienteEntity) {
 		
+		validarCPF(clienteEntity.getCpf());
 		clienteRepository.save(clienteEntity);
 		return clienteEntity;
 	}
 	
-	public ClienteEntity pesquisaCliente(Integer id) {
+	public ClienteEntity pesquisarCliente(Integer id) {
 		Optional<ClienteEntity> clienteOptional = clienteRepository.findById(id);
 		
 		if(clienteOptional.isPresent()) {
