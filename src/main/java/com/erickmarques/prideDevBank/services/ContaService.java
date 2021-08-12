@@ -1,12 +1,12 @@
 package com.erickmarques.prideDevBank.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.erickmarques.prideDevBank.entity.ContaEntity;
+import com.erickmarques.prideDevBank.exceptions.ContaInvalidaException;
 import com.erickmarques.prideDevBank.repository.ContaRepository;
 import static com.erickmarques.prideDevBank.util.Validador.temSaldo;;
 
@@ -24,13 +24,12 @@ public class ContaService {
 
 	public ContaEntity pesquisarPorAgenciaEConta(String numeroAgencia, String numeroConta) {
 
-		List<ContaEntity> contaEntity = contaRepository.findByNumeroAgenciaAndNumeroContaEquals(numeroAgencia,
+		ContaEntity contaEntity = contaRepository.findByNumeroAgenciaAndNumeroContaEquals(numeroAgencia,
 				numeroConta);
 		if (contaEntity != null) {
-
-			return contaEntity.get(0);
+			return contaEntity;
 		} else {
-			throw new RuntimeException("Conta inválida");
+			throw new ContaInvalidaException();
 		}
 
 	}
@@ -47,12 +46,14 @@ public class ContaService {
 	}
 
 	public ContaEntity depositar(ContaEntity contaEntity, float valorDeposito) {
+		contaEntity = this.pesquisarPorAgenciaEConta(contaEntity.getNumeroAgencia(), contaEntity.getNumeroConta());
 		contaEntity.setSaldo(contaEntity.getSaldo() + valorDeposito);
 		contaRepository.save(contaEntity);
 		return contaEntity;
 	}
 
 	public ContaEntity sacar(ContaEntity contaEntity, float valorSaque) {
+		contaEntity = this.pesquisarPorAgenciaEConta(contaEntity.getNumeroAgencia(), contaEntity.getNumeroConta());
 		temSaldo(contaEntity.getSaldo(), valorSaque);
 		contaEntity.setSaldo(contaEntity.getSaldo() - valorSaque);
 		contaRepository.save(contaEntity);

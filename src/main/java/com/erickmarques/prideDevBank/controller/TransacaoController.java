@@ -16,6 +16,7 @@ import com.erickmarques.prideDevBank.services.ContaService;
 import com.erickmarques.prideDevBank.services.TransacaoService;
 import com.erickmarques.prideDevBank.entity.ContaEntity;
 import com.erickmarques.prideDevBank.entity.TransacaoEntity;
+//import com.erickmarques.prideDevBank.exceptions.SaldoInsuficienteException;
 
 @RestController
 public class TransacaoController {
@@ -31,18 +32,23 @@ public class TransacaoController {
 
 	@PostMapping(value = "/transacao")
 	@ResponseBody
-	public ResponseEntity<TransacaoEntity> registrarTransacao(@RequestBody TransacaoEntity transacaoEntity) {
-			TransacaoEntity transacaoResponse = transacao.registrarTransacao(transacaoEntity);
-			URI uri = URI.create("/transacao" + transacaoEntity.getId());
-			return ResponseEntity.created(uri).body(transacaoResponse);
+	public ResponseEntity<TransacaoEntity> registrarTransferencia(@RequestBody TransacaoEntity transacaoEntity) {
+		try {
+		TransacaoEntity transacaoResponse = transacao.registrarTransferencia(transacaoEntity);
+		URI uri = URI.create("/transacao" + transacaoEntity.getId());
+		return ResponseEntity.created(uri).body(transacaoResponse);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
 
 	}
-	
+
 	@GetMapping("/transacao/{idContaOrigem}")
 	@ResponseBody
 	public List<TransacaoEntity> pesquisarTransacoesDaConta(@PathVariable("idContaOrigem") Integer id) {
 		return transacao.pesquisarTransacoesDaConta(contaService.pesquisarConta(id));
-		
+
 	}
 
 }

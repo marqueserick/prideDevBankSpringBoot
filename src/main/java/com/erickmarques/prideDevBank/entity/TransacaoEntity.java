@@ -26,6 +26,9 @@ public class TransacaoEntity implements Serializable {
 	@NonNull
 	@JsonProperty("valor")
 	private float valorTransacao;
+	
+	@JsonProperty("descricao")
+	private String descricao;
 
 	@NonNull
 	@ManyToOne(cascade = CascadeType.PERSIST)
@@ -61,6 +64,14 @@ public class TransacaoEntity implements Serializable {
 
 	public void setValorTransacao(float valorTransacao) {
 		this.valorTransacao = valorTransacao;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+	
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public ContaEntity getContaOrigem() {
