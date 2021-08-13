@@ -16,12 +16,8 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository clienteRepository;
 	
-	@Autowired
-	ClienteEntity clienteEntity;
-
 	
 	public ClienteEntity novoCliente(ClienteEntity clienteEntity) {
-		
 		validarCPF(clienteEntity.getCpf());
 		clienteRepository.save(clienteEntity);
 		return clienteEntity;

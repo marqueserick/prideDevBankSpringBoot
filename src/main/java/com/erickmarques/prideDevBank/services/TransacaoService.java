@@ -7,6 +7,8 @@ import com.erickmarques.prideDevBank.entity.ContaEntity;
 import com.erickmarques.prideDevBank.entity.TransacaoEntity;
 import com.erickmarques.prideDevBank.repository.TransacaoRepository;
 
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,7 @@ public class TransacaoService {
 	ContaService contaService;
 
 	public TransacaoEntity registrarTransferencia(TransacaoEntity novaTransacao) {
+		novaTransacao.setData(LocalDateTime.now());
 		String desc = novaTransacao.getDescricao();
 			if (desc.equals("saque")) {
 
@@ -50,8 +53,9 @@ public class TransacaoService {
 		return null;
 	}
 
-	public List<TransacaoEntity> pesquisarTransacoesDaConta(ContaEntity contaOrigem) {
-		return transacao.findByContaOrigem(contaOrigem);
+	public List<TransacaoEntity> pesquisarTransacoesDaConta(int id) {
+		ContaEntity conta = contaService.pesquisarConta(id);
+		return transacao.findByContaOrigemOrContaDestino(conta, conta);
 	}
 
 }

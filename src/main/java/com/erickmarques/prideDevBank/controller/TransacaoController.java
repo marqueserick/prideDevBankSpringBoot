@@ -34,21 +34,21 @@ public class TransacaoController {
 	@ResponseBody
 	public ResponseEntity<TransacaoEntity> registrarTransferencia(@RequestBody TransacaoEntity transacaoEntity) {
 		try {
-		TransacaoEntity transacaoResponse = transacao.registrarTransferencia(transacaoEntity);
-		URI uri = URI.create("/transacao" + transacaoEntity.getId());
-		return ResponseEntity.created(uri).body(transacaoResponse);
-		}catch(Exception e) {
+			TransacaoEntity transacaoResponse = transacao.registrarTransferencia(transacaoEntity);
+			URI uri = URI.create("/transacao" + transacaoEntity.getId());
+			return ResponseEntity.created(uri).body(transacaoResponse);
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
 
 	}
 
-	@GetMapping("/transacao/{idContaOrigem}")
+	@GetMapping("/transacao/{idConta}")
 	@ResponseBody
-	public List<TransacaoEntity> pesquisarTransacoesDaConta(@PathVariable("idContaOrigem") Integer id) {
-		return transacao.pesquisarTransacoesDaConta(contaService.pesquisarConta(id));
-
+	public List<TransacaoEntity> pesquisarTransacoesDaConta(@PathVariable("idConta") Integer id) {
+		return transacao.pesquisarTransacoesDaConta(id);
+		
 	}
 
 }

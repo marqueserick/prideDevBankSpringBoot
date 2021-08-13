@@ -11,6 +11,6 @@ import com.erickmarques.prideDevBank.entity.TransacaoEntity;
 @Repository
 public interface TransacaoRepository extends JpaRepository <TransacaoEntity, Integer> {
 	
-	List<TransacaoEntity> findByContaOrigem(ContaEntity contaOrigem);
+	List<TransacaoEntity> findByContaOrigemOrContaDestino(ContaEntity contaOrigem, ContaEntity contaDestino);
 
 }

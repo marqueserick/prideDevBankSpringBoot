@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.erickmarques.prideDevBank.entity.ClienteEntity;
 import com.erickmarques.prideDevBank.services.ClienteService;
 
+
 @RestController
 public class ClienteController {
 	
@@ -17,10 +18,10 @@ public class ClienteController {
 	
 	@PostMapping(value="/cliente")
 	@ResponseBody
-	public ResponseEntity<ClienteEntity> novaConta(@RequestBody ClienteEntity clienteEntity){
+	public ResponseEntity<ClienteEntity> novaConta(@RequestBody ClienteEntity cliente){
 		
-		ClienteEntity clienteResponse = clienteService.novoCliente(clienteEntity);
-		URI uri = URI.create("/cliente"+clienteEntity.getId());
+		ClienteEntity clienteResponse = clienteService.novoCliente(cliente);
+		URI uri = URI.create("/cliente"+cliente.getId());
 		return ResponseEntity.created(uri).body(clienteResponse);
 	}
 	
